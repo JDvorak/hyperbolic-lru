@@ -1,0 +1,27 @@
+{
+  "name": "hyperbolic-lru",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cache",
+    "lru",
+    "hyperbolic",
+    "frequency",
+    "caching"
+  ],
+  "author": "",
+  "license": "ISC",
+  "description": "A hyperbolic least recently used (H-LRU) cache implementation that combines recency and frequency metrics for optimal cache eviction",
+  "devDependencies": {
+    "@stdlib/random": "^0.3.3",
+    "lru-cache": "^11.1.0",
+    "zipfian-integer": "^1.0.1"
+  },
+  "dependencies": {
+    "faster-count-min-sketch": "1.0.0"
+  }
+}
