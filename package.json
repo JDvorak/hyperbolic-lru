@@ -4,7 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tap test.js",
+    "bench": "node benchmarks/index.js"
   },
   "keywords": [
     "cache",
@@ -13,7 +14,7 @@
     "frequency",
     "caching"
   ],
-  "author": "",
+  "author": "John Dvorak <john@johnsdvorak.com>",
   "license": "ISC",
   "description": "A hyperbolic least recently used (H-LRU) cache implementation that combines recency and frequency metrics for optimal cache eviction",
   "devDependencies": {

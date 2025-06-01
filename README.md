@@ -1,6 +1,6 @@
 # Hyperbolic LRU Cache (hLRU) for JavaScript
 
-[![npm package](https://nodei.co/npm/h-lru.png?downloads=true&stars=true)](https://nodei.co/npm/h-lru/)
+[![npm package](https://nodei.co/npm/hyperbolic-lru.png?downloads=true&stars=true)](https://nodei.co/npm/hyperbolic-lru/)
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](#)
 [![Benchmarks](https://img.shields.io/badge/benchmarks-passing-brightgreen)](#)
 
@@ -29,10 +29,9 @@ Standard LRU (Least Recently Used) caches evict the item that hasn't been access
 ## Installation
 
 ```bash
-# Ensure you have CountMinSketch available, e.g., from the parent directory or as a package
-# npm install h-lru # (Assuming h-lru would be the package name if published)
+npm install hyperbolic-lru
 ```
-*(Note: This example assumes local usage. If published, replace with actual npm install command.)*
+
 
 ## Usage
 
