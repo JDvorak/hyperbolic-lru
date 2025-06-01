@@ -146,19 +146,19 @@ Mathematically, you can think of the trade-off as follows:
 Let:
 *   $`\Delta H`$: The improvement in hit rate from `hLRU` compared to a baseline cache (e.g., LRU). 
     Defined as $`\Delta H = H_{hLRU} - H_{Baseline}`$.
-*   $`C_{miss}`$: The average cost incurred due to a cache miss (e.g., time to fetch from a database, perform a complex computation, etc.). This should be in units consistent with $`C_{hLRU\_overhead}`$.
-*   $`C_{hLRU\_overhead}`$: The average *additional* computational cost per cache operation (e.g., extra CPU time) incurred by `hLRU` compared to the baseline cache due to its more complex eviction logic.
+*   $`C_{miss}`$: The average cost incurred due to a cache miss (e.g., time to fetch from a database, perform a complex computation, etc.). This should be in units consistent with $`C_{hLRU\\_overhead}`$.
+*   $`C_{hLRU\\_overhead}`$: The average *additional* computational cost per cache operation (e.g., extra CPU time) incurred by `hLRU` compared to the baseline cache due to its more complex eviction logic.
 
 `hLRU` is generally favored when the savings from reduced misses are greater than its additional operational cost:
 
 ```math
-(H_{hLRU} - H_{Baseline}) \times C_{miss} > C_{hLRU\_overhead}
+(H_{hLRU} - H_{Baseline}) \times C_{miss} > C_{hLRU\\_overhead}
 ```
 
 Or, using $`\Delta H`$:
 
 ```math
-\Delta H \times C_{miss} > C_{hLRU\_overhead}
+\Delta H \times C_{miss} > C_{hLRU\\_overhead}
 ```
 
 **In simpler terms:**
@@ -167,7 +167,7 @@ Use `hLRU` if:
 
 *   **Cache misses are expensive:** If fetching data from the source (on a miss) has a high penalty (latency, computational load on backend systems), then even a modest improvement in hit rate ($`\Delta H`$) can lead to significant overall performance gains.
 *   **Hit rate improvement is substantial:** The benchmarks show `hLRU` can offer noticeable hit rate improvements in specific (e.g., Zipfian) workloads.
-*   **The application can tolerate a slight increase in per-operation latency for the cache itself** in exchange for fewer expensive misses. The `sampleSize` parameter in `hLRU` allows you to tune this trade-off directly: smaller `sampleSize` reduces $`C_{hLRU\_overhead}`$ but might also reduce $`\Delta H`$.
+*   **The application can tolerate a slight increase in per-operation latency for the cache itself** in exchange for fewer expensive misses. The `sampleSize` parameter in `hLRU` allows you to tune this trade-off directly: smaller `sampleSize` reduces $`C_{hLRU\\_overhead}`$ but might also reduce $`\Delta H`$.
 
 If cache misses are very cheap, or if the hit rate of a simpler cache like LRU is already very high and close to optimal for your workload, the additional overhead of `hLRU` might not be justified.
 
@@ -182,11 +182,11 @@ Let's consider caching responses from a Large Language Model (LLM). LLM calls ca
 *   **`hLRU` Cache:**
     *   Hit Rate ($`H_{hLRU}`$): 70% (so, $`\Delta H = H_{hLRU} - H_{Baseline} = 10\% `$)
 *   **Cost of a Cache Miss (LLM Call):**
-    *   Average Time ($`C_{miss\_time}`$): 2000 milliseconds (2 seconds)
-    *   Average Monetary/Compute Cost ($`C_{miss\_cost}`$): $0.02 per call (hypothetical)
+    *   Average Time ($`C_{miss\\_time}`$): 2000 milliseconds (2 seconds)
+    *   Average Monetary/Compute Cost ($`C_{miss\\_cost}`$): $0.02 per call (hypothetical)
 *   **Additional Overhead of `hLRU` per cache operation:**
-    *   Average Additional Time ($`C_{hLRU\_overhead\_time}`$): 0.5 milliseconds
-    *   Average Additional Monetary/Compute Cost ($`C_{hLRU\_overhead\_cost}`$): Negligible for this example (let's assume it's primarily a time overhead).
+    *   Average Additional Time ($`C_{hLRU\\_overhead\\_time}`$): 0.5 milliseconds
+    *   Average Additional Monetary/Compute Cost ($`C_{hLRU\\_overhead\\_cost}`$): Negligible for this example (let's assume it's primarily a time overhead).
 
 **Analysis per 1000 requests:**
 
@@ -209,7 +209,7 @@ Let's consider caching responses from a Large Language Model (LLM). LLM calls ca
 
 **Checking with the formula (per operation):**
 
-Is $`\Delta H \times C_{miss} > C_{hLRU\_overhead}`$?
+Is $`\Delta H \times C_{miss} > C_{hLRU\\_overhead}`$?
 
 *   **Time:**
     *   Benefit from improved hit rate: $`0.10 \times 2000\ ms = 200\ ms`$ per operation.
@@ -226,7 +226,7 @@ The Hyperbolic LRU cache tries to be smarter about evictions than a standard LRU
 
 1.  **Sampling:** A small set of `sampleSize` items is randomly chosen from the cache.
 2.  **Priority Calculation:** For each sampled item, a "hyperbolic priority" is calculated:
-    \[ \text{Priority} = \frac{\text{Estimated Frequency}}{\text{Time in Cache (seconds)} + 1} \]
+    $` \text{Priority} = \frac{\text{Estimated Frequency}}{\text{Time in Cache (seconds)} + 1} `$
     *   **Estimated Frequency:** Obtained from an internal Count-Min Sketch, which tracks how often each item is accessed (`set` or `get`).
     *   **Time in Cache:** The duration since the item was last accessed or added.
 3.  **Eviction:** The item from the sample with the *lowest* priority score is evicted. A lower score means it's either less frequent, has been in the cache for a longer time without recent access, or a combination of both.
